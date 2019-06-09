@@ -106,7 +106,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_capture_obj, camera_capture);
 
 STATIC mp_obj_t camera_flip(){
     //acquire a frame
-    sensor_t * fb = esp_camera_fb_get();
+    sensor_t * s = esp_camera_fb_get();
     s->set_vflip(s, 1);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_flip_obj, camera_flip);

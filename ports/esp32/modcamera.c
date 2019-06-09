@@ -90,7 +90,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_deinit_obj, camera_deinit);
 
 STATIC mp_obj_t camera_capture(){
     //acquire a frame
-    camera_fb_t * fb = esp_camera_fb_get();
+    camera_fb_t * s = esp_camera_fb_get();
     if (!fb) {
         ESP_LOGE(TAG, "Camera Capture Failed");
         return mp_const_false;
@@ -104,6 +104,13 @@ STATIC mp_obj_t camera_capture(){
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_capture_obj, camera_capture);
 
+STATIC mp_obj_t camera_flip(){
+    //acquire a frame
+    sensor_t * fb = esp_camera_fb_get();
+    s->set_vflip(s, 1);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_flip_obj, camera_flip);
+
 
 STATIC const mp_rom_map_elem_t camera_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_camera) },
@@ -111,6 +118,7 @@ STATIC const mp_rom_map_elem_t camera_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&camera_init_obj) },
     { MP_ROM_QSTR(MP_QSTR_deinit), MP_ROM_PTR(&camera_deinit_obj) },
     { MP_ROM_QSTR(MP_QSTR_capture), MP_ROM_PTR(&camera_capture_obj) },
+    { MP_ROM_QSTR(MP_QSTR_flip), MP_ROM_PTR(&camera_flip_obj) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(camera_module_globals, camera_module_globals_table);

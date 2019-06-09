@@ -71,23 +71,12 @@ void mp_task(void *pvParameter) {
     uart_init();
 
     #if CONFIG_SPIRAM_SUPPORT
-    // Try to use the entire external SPIRAM directly for the heap
-    size_t mp_task_heap_size;
-    void *mp_task_heap = (void*)0x3f800000;
-    switch (esp_spiram_get_chip_size()) {
-        case ESP_SPIRAM_SIZE_16MBITS:
-            mp_task_heap_size = 2 * 1024 * 1024;
-            break;
-        case ESP_SPIRAM_SIZE_32MBITS:
-        case ESP_SPIRAM_SIZE_64MBITS:
-            mp_task_heap_size = 4 * 1024 * 1024;
-            break;
-        default:
-            // No SPIRAM, fallback to normal allocation
-            mp_task_heap_size = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
-            mp_task_heap = malloc(mp_task_heap_size);
-            break;
-    }
+    
+    // allocate part of PSRAM for micropython, leave rest for native camera module
+    size_t mp_task_heap_size = 2 * 1024 * 1024;
+    void *mp_task_heap = malloc(mp_task_heap_size);
+    ESP_LOGI("main", "Allocated %dK for micropython heap at %p", mp_task_heap_size/1024, mp_task_heap);
+	
     #else
     // Allocate the uPy heap using malloc and get the largest available region
     size_t mp_task_heap_size = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);

@@ -179,6 +179,7 @@ extern const struct _mp_obj_module_t mp_module_usocket;
 extern const struct _mp_obj_module_t mp_module_machine;
 extern const struct _mp_obj_module_t mp_module_network;
 extern const struct _mp_obj_module_t mp_module_onewire;
+extern const struct _mp_obj_module_t mp_module_camera;
 
 #define MICROPY_PORT_BUILTIN_MODULES \
     { MP_OBJ_NEW_QSTR(MP_QSTR_esp), (mp_obj_t)&esp_module }, \
@@ -208,6 +209,7 @@ extern const struct _mp_obj_module_t mp_module_onewire;
     { MP_OBJ_NEW_QSTR(MP_QSTR_struct), (mp_obj_t)&mp_module_ustruct }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_time), (mp_obj_t)&utime_module }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_zlib), (mp_obj_t)&mp_module_uzlib }, \
+	{ MP_OBJ_NEW_QSTR(MP_QSTR_camera), (mp_obj_t)&mp_module_camera }, \
 
 #define MP_STATE_PORT MP_STATE_VM
 

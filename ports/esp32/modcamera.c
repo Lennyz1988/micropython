@@ -104,8 +104,8 @@ STATIC mp_obj_t camera_capture(){
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_capture_obj, camera_capture);
 
-STATIC mp_obj_t camera_flip(mp_obj_t direction){
-    //acquire a frame
+STATIC mp_obj_t camera_vflip(mp_obj_t direction){
+    
     sensor_t * s = esp_camera_sensor_get();
     if (!s) {
         ESP_LOGE(TAG, "Flipping Failed");
@@ -115,7 +115,20 @@ STATIC mp_obj_t camera_flip(mp_obj_t direction){
     s->set_vflip(s, test);
     return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_1(camera_flip_obj, camera_flip);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(camera_vflip_obj, camera_vflip);
+
+STATIC mp_obj_t camera_hmirror(mp_obj_t direction){
+    
+    sensor_t * s = esp_camera_sensor_get();
+    if (!s) {
+        ESP_LOGE(TAG, "Mirroring Failed");
+        return mp_const_false;
+      }
+    int test = mp_obj_get_int(direction);
+    s->set_hmirror(s, test);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(camera_hmirror_obj, camera_hmirror);
 
 
 STATIC const mp_rom_map_elem_t camera_module_globals_table[] = {
@@ -124,7 +137,8 @@ STATIC const mp_rom_map_elem_t camera_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&camera_init_obj) },
     { MP_ROM_QSTR(MP_QSTR_deinit), MP_ROM_PTR(&camera_deinit_obj) },
     { MP_ROM_QSTR(MP_QSTR_capture), MP_ROM_PTR(&camera_capture_obj) },
-    { MP_ROM_QSTR(MP_QSTR_flip), MP_ROM_PTR(&camera_flip_obj) },
+    { MP_ROM_QSTR(MP_QSTR_flip), MP_ROM_PTR(&camera_vflip_obj) },
+	{ MP_ROM_QSTR(MP_QSTR_flip), MP_ROM_PTR(&camera_hmirror_obj) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(camera_module_globals, camera_module_globals_table);

@@ -104,12 +104,18 @@ STATIC mp_obj_t camera_capture(){
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_capture_obj, camera_capture);
 
-STATIC mp_obj_t camera_flip(){
+STATIC mp_obj_t camera_flip(mp_obj_t direction){
     //acquire a frame
-    sensor_t * s = esp_camera_fb_get();
-    s->set_vflip(s, 1);
+    sensor_t * s = esp_camera_sensor_get();
+    if (!s) {
+        ESP_LOGE(TAG, "Flipping Failed");
+        return mp_const_false;
+      }
+    int test = mp_obj_get_int(direction);
+    s->set_vflip(s, test);
+    return mp_const_none;
 }
-STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_flip_obj, camera_flip);
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(camera_flip_obj, camera_flip);
 
 
 STATIC const mp_rom_map_elem_t camera_module_globals_table[] = {

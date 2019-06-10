@@ -90,7 +90,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(camera_deinit_obj, camera_deinit);
 
 STATIC mp_obj_t camera_capture(){
     //acquire a frame
-    camera_fb_t * s = esp_camera_fb_get();
+    camera_fb_t * fb = esp_camera_fb_get();
     if (!fb) {
         ESP_LOGE(TAG, "Camera Capture Failed");
         return mp_const_false;
